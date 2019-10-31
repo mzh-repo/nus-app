@@ -6,12 +6,30 @@ class AlertPage extends StatefulWidget {
 }
 
 class _AlertPageState extends State<AlertPage> {
+  List<Tab> tab = <Tab>[
+    Tab(
+      text: "选项卡1",
+    ),
+    Tab(
+      text: "选项卡2",
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Text('Alerts'),
-      centerTitle: true,
-      leading: Text(''),
-    );
+    return DefaultTabController(
+        length: 2,
+        child: new Scaffold(
+            appBar: AppBar(
+              title: Text('Alerts'),
+              centerTitle: true,
+              leading: Text(''),
+              bottom: new TabBar(tabs: tab),
+            ),
+            body: new TabBarView(
+              children: tab.map((Tab tab) {
+                return Center(child: new Text(tab.text));
+              }).toList(),
+            )));
   }
 }

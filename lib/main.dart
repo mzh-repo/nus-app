@@ -16,7 +16,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'NUS Camera',
-      theme: ThemeData(primaryColor: nusBackgroundWhite),
+      theme: ThemeData(
+          primaryColor: nusBackgroundWhite,
+          ),
       initialRoute: '/login',
       routes: {
         '/': (BuildContext context) => HomePage(),
