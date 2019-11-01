@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'style/colors.dart';
-import 'package:nus_app/pages/alert.dart';
-import 'package:nus_app/pages/dashboard.dart';
-import 'package:nus_app/pages/account.dart';
+import './style/colors.dart';
+import '../pages/alert.dart';
+import '../pages/dashboard.dart';
+import '../pages/account.dart';
 
 class HomePage extends StatefulWidget {
   @override

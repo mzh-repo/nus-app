@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nus_app/pages/login.dart';
-import 'package:nus_app/pages/home.dart';
-import 'package:nus_app/pages/alertResult.dart';
-import 'package:nus_app/pages/style/colors.dart';
+import 'package:nus_app/pages/remark.dart';
+import './pages/login.dart';
+import './pages/home.dart';
+import './pages/alertResult.dart';
+import './pages/style/colors.dart';
+import './pages/alertDetail.dart';
+import './pages/remark.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,13 +20,15 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'NUS Camera',
       theme: ThemeData(
-          primaryColor: nusBackgroundWhite,
-          ),
+        primaryColor: nusBackgroundWhite,
+      ),
       initialRoute: '/login',
       routes: {
         '/': (BuildContext context) => HomePage(),
         '/login': (BuildContext context) => LoginPage(),
-        '/result': (BuildContext context) => ResultPage()
+        '/result': (BuildContext context) => ResultPage(),
+        '/detail': (BuildContext context) => DetailPage(),
+        '/remark': (BuildContext context) => RemarkPage()
       },
     );
   }

@@ -9,32 +9,50 @@ class Post {
   const Post({this.title, this.subTitle, this.image});
 }
 
-final List<Post> posts = [
-  Post(
-    title: '疯狂动物城',
-    subTitle: 'Level 2 - Female Restroom A',
-    image: 'http://img5.mtime.cn/mt/2018/10/22/104316.77318635_180X260X4.jpg',
-  ),
-  Post(
-    title: '中国蓝盔',
-    subTitle: 'Level 2 - Female Restroom A',
-    image: 'http://img5.mtime.cn/mt/2018/10/10/112514.30587089_180X260X4.jpg',
-  ),
-  Post(
-    title: '克隆人',
-    subTitle: 'Level 2 - Female Restroom A',
-    image: 'http://img5.mtime.cn/mt/2018/11/13/093605.61422332_180X260X4.jpg',
-  ),
-  Post(
-    title: '龙猫',
-    subTitle: 'Level 2 - Female Restroom A',
-    image: 'http://img5.mtime.cn/mt/2018/11/07/092515.55805319_180X260X4.jpg',
-  ),
-  Post(
-    title: '恐怖快递',
-    subTitle: 'Level 2 - Female Restroom A',
-    image: 'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-  ),
+// final List<Post> posts = [
+//   Post(
+//     title: '疯狂动物城',
+//     subTitle: 'Level 2 - Female Restroom A',
+//     image: 'http://img5.mtime.cn/mt/2018/10/22/104316.77318635_180X260X4.jpg',
+//   ),
+//   Post(
+//     title: '中国蓝盔',
+//     subTitle: 'Level 2 - Female Restroom A',
+//     image: 'http://img5.mtime.cn/mt/2018/10/10/112514.30587089_180X260X4.jpg',
+//   ),
+//   Post(
+//     title: '克隆人',
+//     subTitle: 'Level 2 - Female Restroom A',
+//     image: 'http://img5.mtime.cn/mt/2018/11/13/093605.61422332_180X260X4.jpg',
+//   ),
+//   Post(
+//     title: '龙猫',
+//     subTitle: 'Level 2 - Female Restroom A',
+//     image: 'http://img5.mtime.cn/mt/2018/11/07/092515.55805319_180X260X4.jpg',
+//   ),
+//   Post(
+//     title: '恐怖快递',
+//     subTitle: 'Level 2 - Female Restroom A',
+//     image: 'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
+//   ),
+// ];
+
+final List<Map> lists = [
+  {
+    'title': '疯狂动物城',
+    'subTitle': 'Level 2 - Female Restroom A',
+    'image': 'http://img5.mtime.cn/mt/2018/10/22/104316.77318635_180X260X4.jpg',
+  },
+  {
+    'title': '疯狂动物城',
+    'subTitle': 'Level 2 - Female Restroom A',
+    'image': 'http://img5.mtime.cn/mt/2018/10/22/104316.77318635_180X260X4.jpg',
+  },
+  {
+    'title': '疯狂动物城',
+    'subTitle': 'Level 2 - Female Restroom A',
+    'image': 'http://img5.mtime.cn/mt/2018/10/22/104316.77318635_180X260X4.jpg',
+  },
 ];
 
 class DashboardPage extends StatefulWidget {
@@ -63,7 +81,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(6.0),
                 image: DecorationImage(
-                  image: NetworkImage(posts[index].image),
+                  image: NetworkImage(lists[index]['image']),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -71,9 +89,9 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(posts[index].title),
+                Text(lists[index]['title']),
                 SizedBox(height: 10.0),
-                Text(posts[index].subTitle)
+                Text(lists[index]['subTitle'])
               ],
             ),
           ],
@@ -91,7 +109,7 @@ class _DashboardPageState extends State<DashboardPage> {
           elevation: 0),
       body: SafeArea(
           child: Container(
-        padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
+        padding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 40.0),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -118,7 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     // height: 500,
                     child: Scrollbar(
                         child: ListView.builder(
-              itemCount: posts.length,
+              itemCount: lists.length,
               itemBuilder: _buildListItem,
             )))),
           ],

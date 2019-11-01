@@ -14,6 +14,7 @@ const nusblack10 = Color(0xFFEEEEEE);
 const nusblack20 = Color(0xFFAAAAAA);
 const nusblack50 = Color(0xFF999999);
 const nusblack100 = Color(0xFF666666);
+const nusblack150 = Color(0xFF222222);
 const nusblack200 = Color(0xFF333333);
 
 // 下划线

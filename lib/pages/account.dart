@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nus_app/pages/style/colors.dart';
+import './style/colors.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -10,6 +10,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: nusBackgroundWhite,
       appBar: new AppBar(
         title: Text('Account'),
         centerTitle: true,
@@ -48,19 +49,20 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 const SizedBox(height: 15.0),
                 Container(
-                    width: double.infinity,
                     height: 50,
                     padding: EdgeInsets.only(left: 15, right: 15),
-                    child: RaisedButton(
+                    child: Material(
+                      borderRadius: BorderRadius.circular(5.0),
                       color: nusGrey50,
-                      child: const Text('Logout'),
-                      elevation: 1.0,
-                      shape: const BeveledRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
+                      child: (GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/login');
+                          },
+                          child: Center(
+                              child: const Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 16),
+                          )))),
                     )),
               ],
             ),
