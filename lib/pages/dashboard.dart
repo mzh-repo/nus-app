@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './style/colors.dart';
+import '../style/colors.dart';
 
 class Post {
   final String title;
@@ -132,8 +132,6 @@ class _DashboardPageState extends State<DashboardPage> {
             SizedBox(height: 20.0),
             Expanded(
                 child: Container(
-                    // width: 500,
-                    // height: 500,
                     child: Scrollbar(
                         child: ListView.builder(
               itemCount: lists.length,

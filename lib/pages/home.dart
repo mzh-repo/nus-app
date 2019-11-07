@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './style/colors.dart';
+import '../style/colors.dart';
 import '../pages/alert.dart';
 import '../pages/dashboard.dart';
 import '../pages/account.dart';

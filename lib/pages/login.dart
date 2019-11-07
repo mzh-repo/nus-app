@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import './style/colors.dart';
+import 'package:toast/toast.dart';
+import '../style/colors.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,6 +10,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void showToast() {
+    Toast.show("Please contact admin office", context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,30 +60,36 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
             ),
-            ButtonBar(
-              children: <Widget>[
-                // FlatButton(
-                //   child: const Text('CANCEL'),
-                //   shape: const BeveledRectangleBorder(
-                //     borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                //   ),
-                //   onPressed: () {
-                //     _usernameController.clear();
-                //     _passwordController.clear();
-                //   },
-                // ),
-                RaisedButton(
-                  child: const Text('SIGN IN'),
-                  elevation: 8.0,
-                  shape: const BeveledRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                ),
-              ],
+            const SizedBox(height: 12.0),
+            GestureDetector(
+              onTap: showToast,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    'Forgot Password or Need A New Account?',
+                    style: TextStyle(fontSize: 12, color: nusblack100),
+                  )
+                ],
+              ),
             ),
+            const SizedBox(height: 56.0),
+            Container(
+                height: 45,
+                child: Material(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: nusGrey100,
+                  child: (GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/');
+                      },
+                      child: Center(
+                          child: const Text(
+                        'SIGN IN',
+                        style:
+                            TextStyle(fontSize: 16, color: nusBackgroundWhite),
+                      )))),
+                )),
           ],
         ),
       ),

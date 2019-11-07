@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './style/colors.dart';
+import '../style/colors.dart';
 
 class AccountPage extends StatefulWidget {
   @override

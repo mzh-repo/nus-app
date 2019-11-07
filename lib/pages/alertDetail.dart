@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import './style/colors.dart';
+import '../style/colors.dart';
 
 class DetailPage extends StatefulWidget {
   @override

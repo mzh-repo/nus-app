@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nus_app/pages/remark.dart';
 import './pages/login.dart';
 import './pages/home.dart';
 import './pages/alertResult.dart';
-import './pages/style/colors.dart';
 import './pages/alertDetail.dart';
 import './pages/remark.dart';
+import './style/colors.dart';
 
 void main() => runApp(MyApp());
 

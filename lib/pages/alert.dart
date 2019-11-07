@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './style/colors.dart';
+import '../style/colors.dart';
+import '../util/http.dart';
 
 class AlertPage extends StatefulWidget {
   @override
@@ -7,14 +8,30 @@ class AlertPage extends StatefulWidget {
 }
 
 class _AlertPageState extends State<AlertPage> {
-  // List<Tab> tab = <Tab>[
-  //   Tab(
-  //     text: "选项卡1",
-  //   ),
-  //   Tab(
-  //     text: "选项卡2",
-  //   )
-  // ];
+  List _tabs = ['man', 'female', 'unknow'];
+  List<DropdownMenuItem<String>> _dropDownMenuItems;
+  String _showContent;
+
+  @override
+  void initState() {
+    _dropDownMenuItems = buildDropDownMenuItem(_tabs);
+    _showContent = _dropDownMenuItems[0].value;
+    super.initState();
+  }
+
+  List<DropdownMenuItem<String>> buildDropDownMenuItem(List tabs) {
+    List<DropdownMenuItem<String>> items = List();
+    for (String tab in tabs) {
+      items.add(DropdownMenuItem(value: tab, child: Text(tab)));
+    }
+    return items;
+  }
+
+  void changedDropDownItem(String showContent) {
+    setState(() {
+      _showContent = showContent;
+    });
+  }
 
   Widget _fontStyle(String name, double size, Color color,
       {FontWeight weight}) {
@@ -78,6 +95,12 @@ class _AlertPageState extends State<AlertPage> {
     }
   ];
 
+  // List<DropdownMenuItem> getList() {
+  //   return new List<DropdownMenuItem>.generate(
+  //       9, (i) => new DropdownMenuItem(child: new Text('$i'), value: '$i'));
+  // }
+
+  var value;
   Widget _buildAlert(BuildContext context, int index) {
     return Container(
         margin: EdgeInsets.only(bottom: 15.0),
@@ -95,7 +118,6 @@ class _AlertPageState extends State<AlertPage> {
                   _fontStyle(alerts[index]['time'], 12.0, nusblack200),
                   Container(
                     child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         _fontStyle('Detail', 12.0, nusblack200),
                         Image.asset('assets/arrow_right.png'),
@@ -138,18 +160,6 @@ class _AlertPageState extends State<AlertPage> {
                         Positioned(
                             right: 0.0,
                             bottom: 0.0,
-                            // child: RaisedButton(
-                            //   color: Colors.red,
-                            //   elevation: 1.0,
-                            //   shape: const BeveledRectangleBorder(
-                            //     borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                            //   ),
-                            //   child: _fontStyle(
-                            //       alerts[index]['role'], 12.0, nusBackgroundWhite),
-                            //   onPressed: () {
-                            //     Navigator.pushNamed(context, '/login');
-                            //   },
-                            // ),
                             child: Container(
                               width: 70.0,
                               height: 24.0,
@@ -183,11 +193,49 @@ class _AlertPageState extends State<AlertPage> {
             leading: Text(''),
             elevation: 0,
             // bottom: new TabBar(tabs: tab),
+            bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(48.0),
+                child: Container(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        DropdownButton(
+                          value: _showContent,
+                          items: _dropDownMenuItems,
+                          onChanged: changedDropDownItem,
+                          underline: new Container(),
+                          isDense: true,
+                        ),
+                        SizedBox(width: 40.0),
+                        DropdownButton(
+                          value: _showContent,
+                          items: _dropDownMenuItems,
+                          onChanged: changedDropDownItem,
+                          underline: new Container(),
+                        )
+                      ],
+                    )
+
+                    // DropdownButton(
+                    //   items: getList(),
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       _showContent = value;
+                    //     });
+                    //   },
+                    //   hint: new Text(
+                    //     _showContent,
+                    //     style: TextStyle(color: Colors.white),
+                    //   ),
+                    //   underline: new Container(),
+                    //   style: TextStyle(color: Colors.white),
+                    //   iconEnabledColor: Colors.white,
+                    //   iconDisabledColor: Colors.white,
+                    //   value: _showContent,
+                    // )
+                    )),
           ),
-          // body: ListView.builder(
-          //   itemCount: alerts.length,
-          //   itemBuilder: _buildAlert,
-          // )
           body: Container(
               padding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0),
               child: ListView.builder(

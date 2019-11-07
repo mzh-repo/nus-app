@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './style/colors.dart';
+import '../style/colors.dart';
 
 class RemarkPage extends StatefulWidget {
   final content = '';
@@ -35,7 +35,7 @@ class _RemarkPageState extends State<RemarkPage> {
             child: TextField(
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 20.0),
+                    vertical: 259.0, horizontal: 20.0),
                 hintText: 'Please add necessary remarks.',
                 // contentPadding: EdgeInsets.all(10),
                 border: OutlineInputBorder(
