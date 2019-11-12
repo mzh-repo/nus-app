@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../style/colors.dart';
+import '../util/http.dart';
 
 class Post {
   final String title;
@@ -63,6 +64,52 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int processNum = 25;
   int totalNum = 306;
+  List list = new List();
+  int _page = 0;
+  int _pageSize = 10;
+  ScrollController _scrollController = ScrollController(); // listview 控制器
+  bool isLoading = false; //是否正在加载数据
+
+  var moreData;
+
+  @override
+  void initState() {
+    super.initState();
+    // _alertList(_page);
+    _getBasic();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print('滑动到了最底部');
+        _getMore(_page++);
+      }
+    });
+  }
+
+  void _alertList(int page) {
+    DioUtil.request('/camera/failure_list?page=$_page&&page_size=$_pageSize')
+        .then((res) => {list = res['data']});
+  }
+
+  Future _getMore(int page) async {
+    if (!isLoading) {
+      setState(() {
+        isLoading = true;
+      });
+      DioUtil.request('/camera/failure_list?page=$_page&&page_size=$_pageSize')
+          .then((res) => {
+                moreData = res['data'],
+                setState(() {
+                  list.addAll(List.generate(moreData.length, (item) => item));
+                  isLoading = false;
+                })
+              });
+    }
+  }
+
+  void _getBasic() {
+    DioUtil.request('/dashboard').then((res) => {print(res['data'])});
+  }
 
   Widget _buildListItem(BuildContext context, int index) {
     return Container(
@@ -81,7 +128,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(6.0),
                 image: DecorationImage(
-                  image: NetworkImage(lists[index]['image']),
+                  image: NetworkImage(list[index]['image']),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -89,9 +136,9 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(lists[index]['title']),
+                Text(list[index]['title']),
                 SizedBox(height: 10.0),
-                Text(lists[index]['subTitle'])
+                Text(list[index]['subTitle'])
               ],
             ),
           ],
@@ -134,12 +181,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Container(
                     child: Scrollbar(
                         child: ListView.builder(
-              itemCount: lists.length,
+              itemCount: list.length,
               itemBuilder: _buildListItem,
             )))),
           ],
         ),
       )),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 }

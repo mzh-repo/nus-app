@@ -32,7 +32,7 @@ class DioUtil {
       if (response.statusCode == 200) {
         return response;
       } else {
-        throw Exception("接口异常R");
+        throw Exception("接口异常");
       }
     } catch (e) {
       print("网络出现错误${e}");

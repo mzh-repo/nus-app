@@ -30,20 +30,20 @@ class _ResultPageState extends State<ResultPage> {
                 width: double.infinity,
                 height: 50,
                 padding: EdgeInsets.only(left: 100, right: 100),
-                child: Material(
-                  borderRadius: BorderRadius.circular(50.0),
-                  color: nusBlue,
-                  child: (GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/');
-                      },
+                child: (GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                  child: Material(
+                      borderRadius: BorderRadius.circular(50.0),
+                      color: nusBlue,
                       child: Center(
                           child: const Text(
                         'Return Alerts',
                         style:
                             TextStyle(fontSize: 16, color: nusBackgroundWhite),
-                      )))),
-                )),
+                      ))),
+                ))),
           ],
         ),
       ),

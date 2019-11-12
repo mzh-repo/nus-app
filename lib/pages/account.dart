@@ -51,19 +51,19 @@ class _AccountPageState extends State<AccountPage> {
                 Container(
                     height: 50,
                     padding: EdgeInsets.only(left: 15, right: 15),
-                    child: Material(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: nusGrey50,
-                      child: (GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/login');
-                          },
+                    child: (GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: Material(
+                          borderRadius: BorderRadius.circular(5.0),
+                          color: nusGrey50,
                           child: Center(
                               child: const Text(
                             'Logout',
                             style: TextStyle(fontSize: 16),
-                          )))),
-                    )),
+                          ))),
+                    ))),
               ],
             ),
           ],

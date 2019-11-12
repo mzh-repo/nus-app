@@ -11,12 +11,22 @@ class _AlertPageState extends State<AlertPage> {
   List _tabs = ['man', 'female', 'unknow'];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _showContent;
+  List alerts = [];
 
   @override
   void initState() {
     _dropDownMenuItems = buildDropDownMenuItem(_tabs);
     _showContent = _dropDownMenuItems[0].value;
+    this._alertList();
     super.initState();
+  }
+
+  void _alertList() {
+    DioUtil.request('/alarm').then((res) => {
+          setState(() {
+            alerts = res['data'];
+          }),
+        });
   }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItem(List tabs) {
@@ -46,54 +56,54 @@ class _AlertPageState extends State<AlertPage> {
     );
   }
 
-  List<Map> alerts = [
-    {
-      'time': '2019-07-31 4:09PM',
-      'image':
-          'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-      'name':
-          'Eusoff Hall Eusoff Hall Eusoff HallEusoff Hall  HallEusoff Hall  HallEusoff Hall HallEusoff Hall',
-      'level': 'Level 01',
-      'toliet': 'Toliet A',
-      'role': 'male'
-    },
-    {
-      'time': '2019-07-31 4:09PM',
-      'image':
-          'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-      'name': 'Eusoff Hall',
-      'level': 'Level 01',
-      'toliet': 'Toliet A',
-      'role': 'male'
-    },
-    {
-      'time': '2019-07-31 4:09PM',
-      'image':
-          'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-      'name': 'Eusoff Hall',
-      'level': 'Level 01',
-      'toliet': 'Toliet A',
-      'role': 'male'
-    },
-    {
-      'time': '2019-07-31 4:09PM',
-      'image':
-          'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-      'name': 'Eusoff Hall',
-      'level': 'Level 01',
-      'toliet': 'Toliet A',
-      'role': 'male'
-    },
-    {
-      'time': '2019-07-31 4:09PM',
-      'image':
-          'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-      'name': 'Eusoff Hall',
-      'level': 'Level 01',
-      'toliet': 'Toliet A',
-      'role': 'male'
-    }
-  ];
+  // List<Map> alerts = [
+  //   {
+  //     'time': '2019-07-31 4:09PM',
+  //     'image':
+  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
+  //     'name':
+  //         'Eusoff Hall Eusoff Hall Eusoff HallEusoff Hall  HallEusoff Hall  HallEusoff Hall HallEusoff Hall',
+  //     'level': 'Level 01',
+  //     'toliet': 'Toliet A',
+  //     'role': 'male'
+  //   },
+  //   {
+  //     'time': '2019-07-31 4:09PM',
+  //     'image':
+  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
+  //     'name': 'Eusoff Hall',
+  //     'level': 'Level 01',
+  //     'toliet': 'Toliet A',
+  //     'role': 'male'
+  //   },
+  //   {
+  //     'time': '2019-07-31 4:09PM',
+  //     'image':
+  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
+  //     'name': 'Eusoff Hall',
+  //     'level': 'Level 01',
+  //     'toliet': 'Toliet A',
+  //     'role': 'male'
+  //   },
+  //   {
+  //     'time': '2019-07-31 4:09PM',
+  //     'image':
+  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
+  //     'name': 'Eusoff Hall',
+  //     'level': 'Level 01',
+  //     'toliet': 'Toliet A',
+  //     'role': 'male'
+  //   },
+  //   {
+  //     'time': '2019-07-31 4:09PM',
+  //     'image':
+  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
+  //     'name': 'Eusoff Hall',
+  //     'level': 'Level 01',
+  //     'toliet': 'Toliet A',
+  //     'role': 'male'
+  //   }
+  // ];
 
   // List<DropdownMenuItem> getList() {
   //   return new List<DropdownMenuItem>.generate(

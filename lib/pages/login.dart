@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../style/colors.dart';
+import '../util/http.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,10 +11,34 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _showBtn = false;
 
   void showToast() {
     Toast.show("Please contact admin office", context,
         duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+  }
+
+  void login(BuildContext context) {
+    Navigator.pushNamed(context, '/');
+    if (_showBtn) {
+      var data = {
+        "name": _usernameController.text,
+        "password": _passwordController.text
+      };
+      DioUtil.request('/user/login', formData: data).then((res) => {});
+    }
+  }
+
+  void _vaild() {
+    if (_usernameController.text != '' && _passwordController.text != '') {
+      setState(() {
+        _showBtn = true;
+      });
+    } else {
+      setState(() {
+        _showBtn = false;
+      });
+    }
   }
 
   @override
@@ -43,22 +68,26 @@ class _LoginPageState extends State<LoginPage> {
             PrimaryColorOverride(
               color: nusUnderline,
               child: TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                ),
-              ),
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                  ),
+                  onChanged: (val) {
+                    _vaild();
+                  }),
             ),
             const SizedBox(height: 12.0),
             PrimaryColorOverride(
               color: nusUnderline,
               child: TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                ),
-                obscureText: true,
-              ),
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                  ),
+                  obscureText: true,
+                  onChanged: (val) {
+                    _vaild();
+                  }),
             ),
             const SizedBox(height: 12.0),
             GestureDetector(
@@ -76,20 +105,20 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 56.0),
             Container(
                 height: 45,
-                child: Material(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: nusGrey100,
-                  child: (GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/');
-                      },
+                child: (GestureDetector(
+                  onTap: () =>
+                      // Navigator.pushNamed(context, '/');
+                      login(context),
+                  child: Material(
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: _showBtn ? nusBlue : nusGrey100,
                       child: Center(
                           child: const Text(
                         'SIGN IN',
                         style:
                             TextStyle(fontSize: 16, color: nusBackgroundWhite),
-                      )))),
-                )),
+                      ))),
+                ))),
           ],
         ),
       ),

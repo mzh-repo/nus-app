@@ -94,54 +94,54 @@ class _DetailPageState extends State<DetailPage> {
             children: <Widget>[
               Container(
                   height: 45,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: nusGreen,
-                    child: (GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/result');
-                        },
+                  child: (GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/result');
+                    },
+                    child: Material(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: nusGreen,
                         child: Center(
                             child: const Text(
                           'Female - Add to whitelist',
                           style: TextStyle(
                               fontSize: 16, color: nusBackgroundWhite),
-                        )))),
-                  )),
+                        ))),
+                  ))),
               SizedBox(height: 10.0),
               Container(
                   height: 45,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: nusRed,
-                    child: (GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/remark');
-                        },
+                  child: (GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/remark');
+                    },
+                    child: Material(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: nusRed,
                         child: Center(
                             child: const Text(
                           'Male - Process the alert',
                           style: TextStyle(
                               fontSize: 16, color: nusBackgroundWhite),
-                        )))),
-                  )),
+                        ))),
+                  ))),
               SizedBox(height: 10.0),
               Container(
                   height: 45,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: nusOrange,
-                    child: (GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/result');
-                        },
+                  child: (GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/result');
+                    },
+                    child: Material(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: nusOrange,
                         child: Center(
                             child: const Text(
                           'Unsure - Keep it is',
                           style: TextStyle(
                               fontSize: 16, color: nusBackgroundWhite),
-                        )))),
-                  )),
+                        ))),
+                  ))),
             ],
           )
         ],
