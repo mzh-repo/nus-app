@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+// import 'package:nus_app/util/storage.dart';
 import '../style/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -7,6 +9,27 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  String name;
+  String gender;
+  String time;
+
+  @override
+  void initState() {
+    super.initState();
+    // String data = StorageUtil.getStringItem('Name');
+    // print(data);
+    _getData();
+  }
+
+  _getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('Name');
+      gender = prefs.getInt('Gender') == 1 ? 'Male' : 'Female';
+      time = prefs.getString('Time');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,12 +53,12 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 const SizedBox(height: 20.0),
                 Text(
-                  'Christina',
+                  name,
                   style: TextStyle(fontSize: 20, color: nusblack200),
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  'female',
+                  gender,
                   style: TextStyle(fontSize: 16, color: nusblack100),
                 ),
               ],
@@ -44,7 +67,7 @@ class _AccountPageState extends State<AccountPage> {
             Column(
               children: <Widget>[
                 Text(
-                  'Last login: 2019-09-28 00:00',
+                  'Last login: $time',
                   style: TextStyle(fontSize: 13, color: nusblack50),
                 ),
                 const SizedBox(height: 15.0),

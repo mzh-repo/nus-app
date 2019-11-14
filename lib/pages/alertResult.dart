@@ -17,6 +17,8 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    // 不同类型的结果
+    var type = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: nusBackgroundWhite,
       appBar: AppBar(title: Text('Results'), centerTitle: true, elevation: 0),

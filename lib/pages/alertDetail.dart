@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import '../style/colors.dart';
+import 'dart:convert';
 
 class DetailPage extends StatefulWidget {
   @override
   _DetailPageState createState() => _DetailPageState();
+}
+
+class Alarm {
+  final String room;
+  // final String updateTime;
+  final int gender;
+  Alarm(this.room, this.gender);
+
+  Alarm.fromJson(Map<String, dynamic> json)
+      : room = json['room'],
+        gender = json['gender'];
+
+  Map<String, dynamic> toJson() => {
+        'room': room,
+        'gender': gender,
+      };
 }
 
 List<String> imageList = [
@@ -16,6 +33,9 @@ List<String> imageList = [
 class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
+    //接收参数
+    final Alarm alarm = ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       backgroundColor: nusBackgroundWhite,
       appBar: new AppBar(
@@ -33,7 +53,7 @@ class _DetailPageState extends State<DetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Eusoff Hall',
+                    alarm.room,
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w700,
@@ -43,7 +63,7 @@ class _DetailPageState extends State<DetailPage> {
                     height: 5.0,
                   ),
                   Text(
-                    '2019-07-31 4:09PM',
+                    'alarm.updateTime',
                     style: TextStyle(fontSize: 14.0, color: nusblack50),
                   )
                 ],
@@ -52,11 +72,11 @@ class _DetailPageState extends State<DetailPage> {
                 width: 70.0,
                 height: 24.0,
                 decoration: BoxDecoration(
-                    color: nusOrange,
+                    color: alarm.gender == 1 ? nusRed : nusOrange,
                     borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 child: Center(
                     child: Text(
-                  'unkonw',
+                  '${alarm.gender}' == '1' ? 'male' : 'unknown',
                   style: TextStyle(fontSize: 12.0, color: nusBackgroundWhite),
                 )),
               )

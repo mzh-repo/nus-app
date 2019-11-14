@@ -8,23 +8,23 @@ class AlertPage extends StatefulWidget {
 }
 
 class _AlertPageState extends State<AlertPage> {
-  List _tabs = ['man', 'female', 'unknow'];
+  List _tabs = ['all', 'man', 'unknow'];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _showContent;
-  List alerts = [];
+  List alerts = new List();
 
   @override
   void initState() {
     _dropDownMenuItems = buildDropDownMenuItem(_tabs);
     _showContent = _dropDownMenuItems[0].value;
-    this._alertList();
+    _alertList();
     super.initState();
   }
 
   void _alertList() {
-    DioUtil.request('/alarm').then((res) => {
+    DioUtil.request('/alarm/list').then((res) => {
           setState(() {
-            alerts = res['data'];
+            alerts = res.data['data'];
           }),
         });
   }
@@ -112,20 +112,24 @@ class _AlertPageState extends State<AlertPage> {
 
   var value;
   Widget _buildAlert(BuildContext context, int index) {
-    return Container(
-        margin: EdgeInsets.only(bottom: 15.0),
-        color: nusBackgroundWhite,
-        padding: EdgeInsets.all(15.0),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/detail');
-          },
+    return GestureDetector(
+        onTap: () {
+          Navigator.pushNamed(context, '/detail', arguments: {alerts[index]});
+        },
+        child: Container(
+          margin: EdgeInsets.only(bottom: 15.0),
+          color: nusBackgroundWhite,
+          padding: EdgeInsets.all(15.0),
+          // child: GestureDetector(
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/detail');
+          //   },
           child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  _fontStyle(alerts[index]['time'], 12.0, nusblack200),
+                  _fontStyle(alerts[index]['update_time'], 12.0, nusblack200),
                   Container(
                     child: Row(
                       children: <Widget>[
@@ -146,8 +150,10 @@ class _AlertPageState extends State<AlertPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(6.0),
+                      // TODO
                       image: DecorationImage(
-                        image: NetworkImage(alerts[index]['image']),
+                        // image: NetworkImage(alerts[index]['image']),
+                        image: AssetImage('assets/alert.png'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -158,13 +164,14 @@ class _AlertPageState extends State<AlertPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _fontStyle(alerts[index]['name'], 18.0, nusblack200,
+                            _fontStyle(
+                                alerts[index]['region'], 18.0, nusblack200,
                                 weight: FontWeight.w700),
                             SizedBox(
                               height: 14.0,
                             ),
                             Text(alerts[index]['level']),
-                            Text(alerts[index]['toliet']),
+                            Text(alerts[index]['room']),
                           ],
                         ),
                         Positioned(
@@ -174,11 +181,17 @@ class _AlertPageState extends State<AlertPage> {
                               width: 70.0,
                               height: 24.0,
                               decoration: BoxDecoration(
-                                  color: nusRed,
+                                  color: alerts[index]['reported_gender'] == 1
+                                      ? nusRed
+                                      : nusOrange,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12.0))),
                               child: Center(
-                                child: _fontStyle(alerts[index]['role'], 12.0,
+                                child: _fontStyle(
+                                    alerts[index]['reported_gender'] == 1
+                                        ? 'male'
+                                        : 'unknown',
+                                    12.0,
                                     nusBackgroundWhite),
                               ),
                             ))
@@ -217,13 +230,13 @@ class _AlertPageState extends State<AlertPage> {
                           underline: new Container(),
                           isDense: true,
                         ),
-                        SizedBox(width: 40.0),
-                        DropdownButton(
-                          value: _showContent,
-                          items: _dropDownMenuItems,
-                          onChanged: changedDropDownItem,
-                          underline: new Container(),
-                        )
+                        // SizedBox(width: 40.0),
+                        // DropdownButton(
+                        //   value: _showContent,
+                        //   items: _dropDownMenuItems,
+                        //   onChanged: changedDropDownItem,
+                        //   underline: new Container(),
+                        // )
                       ],
                     )
 

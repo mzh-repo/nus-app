@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../style/colors.dart';
 import '../util/http.dart';
@@ -10,35 +12,7 @@ class Post {
   const Post({this.title, this.subTitle, this.image});
 }
 
-// final List<Post> posts = [
-//   Post(
-//     title: '疯狂动物城',
-//     subTitle: 'Level 2 - Female Restroom A',
-//     image: 'http://img5.mtime.cn/mt/2018/10/22/104316.77318635_180X260X4.jpg',
-//   ),
-//   Post(
-//     title: '中国蓝盔',
-//     subTitle: 'Level 2 - Female Restroom A',
-//     image: 'http://img5.mtime.cn/mt/2018/10/10/112514.30587089_180X260X4.jpg',
-//   ),
-//   Post(
-//     title: '克隆人',
-//     subTitle: 'Level 2 - Female Restroom A',
-//     image: 'http://img5.mtime.cn/mt/2018/11/13/093605.61422332_180X260X4.jpg',
-//   ),
-//   Post(
-//     title: '龙猫',
-//     subTitle: 'Level 2 - Female Restroom A',
-//     image: 'http://img5.mtime.cn/mt/2018/11/07/092515.55805319_180X260X4.jpg',
-//   ),
-//   Post(
-//     title: '恐怖快递',
-//     subTitle: 'Level 2 - Female Restroom A',
-//     image: 'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-//   ),
-// ];
-
-final List<Map> lists = [
+final List<Map> list = [
   {
     'title': '疯狂动物城',
     'subTitle': 'Level 2 - Female Restroom A',
@@ -75,8 +49,8 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    // _alertList(_page);
     _getBasic();
+    _alertList(_page);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -86,9 +60,24 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
+  void _getBasic() {
+    DioUtil.request('/index/dashboard').then((res) => {
+          print(res.data),
+          setState(() {
+            processNum = res.data['processed_alarm_number'];
+            totalNum = res.data['total_alarm_number'];
+          }),
+        });
+  }
+
   void _alertList(int page) {
     DioUtil.request('/camera/failure_list?page=$_page&&page_size=$_pageSize')
-        .then((res) => {list = res['data']});
+        .then((res) => {
+              print('res $res'),
+              setState(() {
+                list = res.data['data'];
+              })
+            });
   }
 
   Future _getMore(int page) async {
@@ -107,10 +96,6 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  void _getBasic() {
-    DioUtil.request('/dashboard').then((res) => {print(res['data'])});
-  }
-
   Widget _buildListItem(BuildContext context, int index) {
     return Container(
         padding: const EdgeInsets.only(top: 15, bottom: 15),
@@ -127,8 +112,10 @@ class _DashboardPageState extends State<DashboardPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(6.0),
+                // TODO
                 image: DecorationImage(
-                  image: NetworkImage(list[index]['image']),
+                  // image: NetworkImage(list[index]['image']),
+                  image: AssetImage('assets/alert.png'),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -136,9 +123,9 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(list[index]['title']),
+                Text(list[index]['region']),
                 SizedBox(height: 10.0),
-                Text(list[index]['subTitle'])
+                Text('${list[index]['level']} - ${list[index]['room']} ')
               ],
             ),
           ],

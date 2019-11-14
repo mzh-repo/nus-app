@@ -3,6 +3,7 @@ import '../style/colors.dart';
 import '../pages/alert.dart';
 import '../pages/dashboard.dart';
 import '../pages/account.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // final FirebaseMessaging _fireBaseMessaging = FirebaseMessaging();
+
   final List<Widget> pages = [
     AlertPage(),
     DashboardPage(),
@@ -20,6 +23,30 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _currentIndex = i;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    //push notification
+//     _fireBaseMessaging.requestNotificationPermissions(
+//         const IosNotificationSettings(sound: true, badge: true, alert: true));
+//     _fireBaseMessaging.getToken().then((token) {
+// //      print(token);
+//       if (token != null) {
+//         _postFcm(token); //推送的post请求
+//       }
+//     });
+  }
+
+  //推送的post请求
+  Future _postFcm(String token) async {
+    //     String url = url;
+    //     var data = {"token": token};
+    //     DioUtil.post(url, data: data).then((response) {
+    //   });
+    // }
   }
 
   @override

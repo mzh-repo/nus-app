@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import '../style/colors.dart';
 import '../util/http.dart';
+// import '../util/storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,14 +21,28 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login(BuildContext context) {
-    Navigator.pushNamed(context, '/');
     if (_showBtn) {
       var data = {
-        "name": _usernameController.text,
+        "account": _usernameController.text,
         "password": _passwordController.text
       };
-      DioUtil.request('/user/login', formData: data).then((res) => {});
+      DioUtil.request('/user/login', formData: data)
+          .then((res) =>
+              {_setStorage(res.data), Navigator.pushNamed(context, '/')})
+          .catchError((e) => {
+                print(e),
+                Toast.show("Account or password incorrect", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.CENTER),
+              });
     }
+  }
+
+  _setStorage(data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('Token', data['login_token']);
+    prefs.setString('Name', data['name']);
+    prefs.setInt('Gender', data['gender']);
+    prefs.setString('Time', data['last_login_time']);
   }
 
   void _vaild() {
