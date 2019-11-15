@@ -8,10 +8,12 @@ class AlertPage extends StatefulWidget {
 }
 
 class _AlertPageState extends State<AlertPage> {
-  List _tabs = ['all', 'man', 'unknow'];
+  List _tabs = ['all', 'male', 'unknow'];
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _showContent;
   List alerts = new List();
+  int page = 0;
+  int pageSize = 10;
 
   @override
   void initState() {
@@ -22,11 +24,35 @@ class _AlertPageState extends State<AlertPage> {
   }
 
   void _alertList() {
-    DioUtil.request('/alarm/list').then((res) => {
-          setState(() {
-            alerts = res.data['data'];
-          }),
-        });
+    int gender;
+    if (_showContent == 'all') {
+      gender = 0;
+    } else if (_showContent == 'unknow') {
+      gender = -1;
+    } else if (_showContent == 'male') {
+      gender = 1;
+    }
+    if (gender == 0) {
+      DioUtil.request('/alarm/list?page=$page&&page_size=$pageSize')
+          .then((res) => {
+                // List data = res.data['data'],
+                // for (var item in data) {
+                //   // DioUtil.request('')
+                //   print(item)
+                // },
+                setState(() {
+                  alerts = res.data['data'];
+                }),
+              });
+    } else {
+      DioUtil.request(
+              '/alarm/list?page=$page&&page_size=$pageSize&&gender=$gender')
+          .then((res) => {
+                setState(() {
+                  alerts = res.data['data'];
+                }),
+              });
+    }
   }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItem(List tabs) {
@@ -41,6 +67,7 @@ class _AlertPageState extends State<AlertPage> {
     setState(() {
       _showContent = showContent;
     });
+    _alertList();
   }
 
   Widget _fontStyle(String name, double size, Color color,
@@ -120,10 +147,6 @@ class _AlertPageState extends State<AlertPage> {
           margin: EdgeInsets.only(bottom: 15.0),
           color: nusBackgroundWhite,
           padding: EdgeInsets.all(15.0),
-          // child: GestureDetector(
-          //   onTap: () {
-          //     Navigator.pushNamed(context, '/detail');
-          //   },
           child: Column(
             children: <Widget>[
               Row(

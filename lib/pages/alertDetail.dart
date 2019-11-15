@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import '../style/colors.dart';
+import '../util/http.dart';
 import 'dart:convert';
 
 class DetailPage extends StatefulWidget {
@@ -89,6 +90,15 @@ List<String> imageList = [
 ];
 
 class _DetailPageState extends State<DetailPage> {
+  void _goResult(context, int id, int i) {
+    if (i == 1) {
+      DioUtil.put('/alarm/$id/process/unsure');
+    } else {
+      DioUtil.put('/alarm/$id/process/whitelist');
+    }
+    Navigator.pushNamed(context, '/result', arguments: i);
+  }
+
   @override
   Widget build(BuildContext context) {
     //接收参数
@@ -160,7 +170,6 @@ class _DetailPageState extends State<DetailPage> {
               },
               itemCount: 3,
               pagination: new SwiperPagination(
-                // margin: const EdgeInsets.only(bottom: 0.0),
                 builder: DotSwiperPaginationBuilder(
                     color: nusGrey100, activeColor: nusblack150),
               ),
@@ -174,7 +183,8 @@ class _DetailPageState extends State<DetailPage> {
                   height: 45,
                   child: (GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/result', arguments: 2);
+                      // Navigator.pushNamed(context, '/result', arguments: 2);
+                      _goResult(context, alarm['id'], 2);
                     },
                     child: Material(
                         borderRadius: BorderRadius.circular(5.0),
@@ -191,7 +201,8 @@ class _DetailPageState extends State<DetailPage> {
                   height: 45,
                   child: (GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/remark');
+                      Navigator.pushNamed(context, '/remark',
+                          arguments: alarm['id']);
                     },
                     child: Material(
                         borderRadius: BorderRadius.circular(5.0),
@@ -208,7 +219,8 @@ class _DetailPageState extends State<DetailPage> {
                   height: 45,
                   child: (GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/result', arguments: 1);
+                      // Navigator.pushNamed(context, '/result', arguments: 1);
+                      _goResult(context, alarm['id'], 1);
                     },
                     child: Material(
                         borderRadius: BorderRadius.circular(5.0),
