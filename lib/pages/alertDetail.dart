@@ -8,21 +8,79 @@ class DetailPage extends StatefulWidget {
   _DetailPageState createState() => _DetailPageState();
 }
 
-class Alarm {
-  final String room;
-  // final String updateTime;
-  final int gender;
-  Alarm(this.room, this.gender);
+// class Alarm {
+//   final String room;
+//   final String updateTime;
+//   final int gender;
+//   final int id;
+//   final String level;
+//   final String region;
+//   final String humanPic;
+//   final String facePic;
+//   final int operatorId;
+//   final int status;
+//   final String statusString;
+//   final String remark;
+//   final int result;
+//   final String resultString;
+//   final String createTime;
+//   final int cameraId;
 
-  Alarm.fromJson(Map<String, dynamic> json)
-      : room = json['room'],
-        gender = json['gender'];
+// Alarm(
+//     this.room,
+//     this.updateTime,
+//     this.gender,
+//     this.id,
+//     this.level,
+//     this.region,
+//     this.humanPic,
+//     this.facePic,
+//     this.operatorId,
+//     this.status,
+//     this.statusString,
+//     this.remark,
+//     this.result,
+//     this.resultString,
+//     this.createTime,
+//     this.cameraId);
 
-  Map<String, dynamic> toJson() => {
-        'room': room,
-        'gender': gender,
-      };
-}
+// Alarm.fromJson(Map<String, dynamic> json)
+//     : room = json['room'],
+//       updateTime = json['update_time'],
+//       gender = json['reported_gender'],
+//       id = json['id'],
+//       level = json['level'],
+//       region = json['region'],
+//       humanPic = json['human_pic'],
+//       facePic = json['face_pic'],
+//       operatorId = json['operator_id'],
+//       status = json['status'],
+//       statusString = json['status_string'],
+//       remark = json['remark'],
+//       result = json['result'],
+//       resultString = json['result_string'],
+//       createTime = json['create_time'],
+//       cameraId = json['camera_id'];
+
+// Map<String, dynamic> toJson() => {
+//       'room': room,
+//       'update_time': updateTime,
+//       'reported_gender': gender,
+//       'id': id,
+//       'level': level,
+//       'region': region,
+//       'human_pic': humanPic,
+//       'face_pic': facePic,
+//       'operator_id': operatorId,
+//       'status': status,
+//       'status_string': statusString,
+//       'remark': remark,
+//       'result': result,
+//       'result_string': resultString,
+//       'create_time': createTime,
+//       'camera_id': cameraId
+//     };
+// }
 
 List<String> imageList = [
   'http://img5.mtime.cn/mt/2018/11/07/092515.55805319_180X260X4.jpg',
@@ -34,7 +92,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     //接收参数
-    final Alarm alarm = ModalRoute.of(context).settings.arguments;
+    Map<String, dynamic> alarm = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       backgroundColor: nusBackgroundWhite,
@@ -53,7 +111,7 @@ class _DetailPageState extends State<DetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    alarm.room,
+                    alarm['region'],
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.w700,
@@ -63,7 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                     height: 5.0,
                   ),
                   Text(
-                    'alarm.updateTime',
+                    alarm['update_time'],
                     style: TextStyle(fontSize: 14.0, color: nusblack50),
                   )
                 ],
@@ -72,11 +130,11 @@ class _DetailPageState extends State<DetailPage> {
                 width: 70.0,
                 height: 24.0,
                 decoration: BoxDecoration(
-                    color: alarm.gender == 1 ? nusRed : nusOrange,
+                    color: alarm['reported_gender'] == 1 ? nusRed : nusOrange,
                     borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 child: Center(
                     child: Text(
-                  '${alarm.gender}' == '1' ? 'male' : 'unknown',
+                  alarm['reported_gender'] == 1 ? 'male' : 'unknown',
                   style: TextStyle(fontSize: 12.0, color: nusBackgroundWhite),
                 )),
               )
@@ -85,7 +143,7 @@ class _DetailPageState extends State<DetailPage> {
           SizedBox(
             height: 20.0,
           ),
-          Text('Level 01-Toilet A',
+          Text('${alarm['level']}-${alarm['room']}',
               style: TextStyle(fontSize: 16.0, color: nusblack200)),
           SizedBox(
             height: 10.0,
@@ -116,7 +174,7 @@ class _DetailPageState extends State<DetailPage> {
                   height: 45,
                   child: (GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/result');
+                      Navigator.pushNamed(context, '/result', arguments: 2);
                     },
                     child: Material(
                         borderRadius: BorderRadius.circular(5.0),
@@ -150,7 +208,7 @@ class _DetailPageState extends State<DetailPage> {
                   height: 45,
                   child: (GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/result');
+                      Navigator.pushNamed(context, '/result', arguments: 1);
                     },
                     child: Material(
                         borderRadius: BorderRadius.circular(5.0),

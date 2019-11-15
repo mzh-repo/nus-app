@@ -114,7 +114,7 @@ class _AlertPageState extends State<AlertPage> {
   Widget _buildAlert(BuildContext context, int index) {
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/detail', arguments: {alerts[index]});
+          Navigator.pushNamed(context, '/detail', arguments: alerts[index]);
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 15.0),

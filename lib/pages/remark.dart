@@ -48,35 +48,35 @@ class _RemarkPageState extends State<RemarkPage> {
           SizedBox(height: 40.0),
           Container(
               height: 45,
-              child: Material(
-                borderRadius: BorderRadius.circular(5.0),
-                color: nusGreen,
-                child: (GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/result');
-                    },
+              child: (GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/result', arguments: 0);
+                },
+                child: Material(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: nusGreen,
                     child: Center(
                         child: const Text(
                       'Captured',
                       style: TextStyle(fontSize: 16, color: nusBackgroundWhite),
-                    )))),
-              )),
+                    ))),
+              ))),
           SizedBox(height: 10.0),
           Container(
               height: 45,
-              child: Material(
-                borderRadius: BorderRadius.circular(5.0),
-                color: nusRed,
-                child: (GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/result');
-                    },
+              child: (GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/result', arguments: 3);
+                },
+                child: Material(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: nusRed,
                     child: Center(
                         child: const Text(
                       'Escaped',
                       style: TextStyle(fontSize: 16, color: nusBackgroundWhite),
-                    )))),
-              )),
+                    ))),
+              ))),
         ],
       ),
     );

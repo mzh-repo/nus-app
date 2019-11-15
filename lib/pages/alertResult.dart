@@ -26,7 +26,7 @@ class _ResultPageState extends State<ResultPage> {
         child: ListView(
           padding: EdgeInsets.only(top: 97),
           children: <Widget>[
-            Image.asset(imageList[i]),
+            Image.asset(imageList[type]),
             const SizedBox(height: 53.0),
             Container(
                 width: double.infinity,

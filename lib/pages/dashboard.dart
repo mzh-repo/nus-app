@@ -39,6 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
   int processNum = 25;
   int totalNum = 306;
   List list = new List();
+  List imageList = new List();
   int _page = 0;
   int _pageSize = 10;
   ScrollController _scrollController = ScrollController(); // listview 控制器
@@ -62,7 +63,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void _getBasic() {
     DioUtil.request('/index/dashboard').then((res) => {
-          print(res.data),
           setState(() {
             processNum = res.data['processed_alarm_number'];
             totalNum = res.data['total_alarm_number'];
@@ -73,7 +73,6 @@ class _DashboardPageState extends State<DashboardPage> {
   void _alertList(int page) {
     DioUtil.request('/camera/failure_list?page=$_page&&page_size=$_pageSize')
         .then((res) => {
-              print('res $res'),
               setState(() {
                 list = res.data['data'];
               })
