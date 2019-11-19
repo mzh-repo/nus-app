@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:nus_app/util/storage.dart';
 import '../style/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../util/http.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -28,6 +29,11 @@ class _AccountPageState extends State<AccountPage> {
       gender = prefs.getInt('Gender') == 1 ? 'Male' : 'Female';
       time = prefs.getString('Time');
     });
+  }
+
+  void _logout(BuildContext context) {
+    DioUtil.post('/user/logout')
+        .then((res) => {Navigator.pushNamed(context, '/login')});
   }
 
   @override
@@ -75,9 +81,7 @@ class _AccountPageState extends State<AccountPage> {
                     height: 50,
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: (GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
+                      onTap: () => _logout(context),
                       child: Material(
                           borderRadius: BorderRadius.circular(5.0),
                           color: nusGrey50,

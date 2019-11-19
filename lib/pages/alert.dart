@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../style/colors.dart';
 import '../util/http.dart';
+import 'dart:convert';
 
 class AlertPage extends StatefulWidget {
   @override
@@ -14,17 +15,73 @@ class _AlertPageState extends State<AlertPage> {
   List alerts = new List();
   int page = 0;
   int pageSize = 10;
+  ScrollController _scrollController = ScrollController(); // listview 控制器
+  bool isLoading = false;
+  String url = ''; // 暂存头像地址 base64
+  var moreData;
+  int gender; //默认all
 
   @override
   void initState() {
+    super.initState();
     _dropDownMenuItems = buildDropDownMenuItem(_tabs);
     _showContent = _dropDownMenuItems[0].value;
     _alertList();
-    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print('滑动到了最底部');
+        _getMore();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  Future _getMore() async {
+    print('more');
+    this.setState(() {
+      page = page + 1;
+    });
+    if (!isLoading) {
+      setState(() {
+        isLoading = true;
+      });
+      if (gender == 0) {
+        print('null');
+        DioUtil.request('/alarm/list?page=$page&&page_size=$pageSize')
+            .then((res) => {
+                  moreData = res.data['data'],
+                  print(moreData[0]['id']),
+                  setState(() {
+                    // list.addAll(List.generate(moreData.length, (item) => item));
+                    alerts.addAll(moreData);
+                    isLoading = false;
+                  }),
+                });
+      } else {
+        print('!!!null');
+        DioUtil.request(
+                '/alarm/list?page=$page&&page_size=$pageSize&&gender=$gender')
+            .then((res) => {
+                  moreData = res.data['data'],
+                  print(moreData[0]['id']),
+                  setState(() {
+                    // list.addAll(List.generate(moreData.length, (item) => item));
+                    alerts.addAll(moreData);
+                    isLoading = false;
+                  }),
+                });
+      }
+    }
   }
 
   void _alertList() {
-    int gender;
+    // int gender;
     if (_showContent == 'all') {
       gender = 0;
     } else if (_showContent == 'unknow') {
@@ -32,14 +89,16 @@ class _AlertPageState extends State<AlertPage> {
     } else if (_showContent == 'male') {
       gender = 1;
     }
+    setState(() {
+      page = 0;
+    });
+    print('index');
+    print(gender);
+    print('page');
+    print(page);
     if (gender == 0) {
       DioUtil.request('/alarm/list?page=$page&&page_size=$pageSize')
           .then((res) => {
-                // List data = res.data['data'],
-                // for (var item in data) {
-                //   // DioUtil.request('')
-                //   print(item)
-                // },
                 setState(() {
                   alerts = res.data['data'];
                 }),
@@ -53,6 +112,13 @@ class _AlertPageState extends State<AlertPage> {
                 }),
               });
     }
+  }
+
+  _getImage(int id) {
+    DioUtil.request('/image/face_pic/$id').then((res) => {
+          this.url = res.toString().split(',')[1],
+        });
+    return this.url;
   }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItem(List tabs) {
@@ -83,61 +149,7 @@ class _AlertPageState extends State<AlertPage> {
     );
   }
 
-  // List<Map> alerts = [
-  //   {
-  //     'time': '2019-07-31 4:09PM',
-  //     'image':
-  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-  //     'name':
-  //         'Eusoff Hall Eusoff Hall Eusoff HallEusoff Hall  HallEusoff Hall  HallEusoff Hall HallEusoff Hall',
-  //     'level': 'Level 01',
-  //     'toliet': 'Toliet A',
-  //     'role': 'male'
-  //   },
-  //   {
-  //     'time': '2019-07-31 4:09PM',
-  //     'image':
-  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-  //     'name': 'Eusoff Hall',
-  //     'level': 'Level 01',
-  //     'toliet': 'Toliet A',
-  //     'role': 'male'
-  //   },
-  //   {
-  //     'time': '2019-07-31 4:09PM',
-  //     'image':
-  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-  //     'name': 'Eusoff Hall',
-  //     'level': 'Level 01',
-  //     'toliet': 'Toliet A',
-  //     'role': 'male'
-  //   },
-  //   {
-  //     'time': '2019-07-31 4:09PM',
-  //     'image':
-  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-  //     'name': 'Eusoff Hall',
-  //     'level': 'Level 01',
-  //     'toliet': 'Toliet A',
-  //     'role': 'male'
-  //   },
-  //   {
-  //     'time': '2019-07-31 4:09PM',
-  //     'image':
-  //         'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg',
-  //     'name': 'Eusoff Hall',
-  //     'level': 'Level 01',
-  //     'toliet': 'Toliet A',
-  //     'role': 'male'
-  //   }
-  // ];
-
-  // List<DropdownMenuItem> getList() {
-  //   return new List<DropdownMenuItem>.generate(
-  //       9, (i) => new DropdownMenuItem(child: new Text('$i'), value: '$i'));
-  // }
-
-  var value;
+  // var value;
   Widget _buildAlert(BuildContext context, int index) {
     return GestureDetector(
         onTap: () {
@@ -175,8 +187,9 @@ class _AlertPageState extends State<AlertPage> {
                       borderRadius: BorderRadius.circular(6.0),
                       // TODO
                       image: DecorationImage(
-                        // image: NetworkImage(alerts[index]['image']),
-                        image: AssetImage('assets/alert.png'),
+                        // image: AssetImage('assets/alert.png'),
+                        image: MemoryImage(Base64Decoder()
+                            .convert(_getImage(alerts[index]['id']))),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -287,6 +300,7 @@ class _AlertPageState extends State<AlertPage> {
               child: ListView.builder(
                 itemCount: alerts.length,
                 itemBuilder: _buildAlert,
+                controller: _scrollController,
               )),
         ));
   }

@@ -83,13 +83,16 @@ class DetailPage extends StatefulWidget {
 //     };
 // }
 
-List<String> imageList = [
-  'http://img5.mtime.cn/mt/2018/11/07/092515.55805319_180X260X4.jpg',
-  'http://img5.mtime.cn/mt/2018/11/13/093605.61422332_180X260X4.jpg',
-  'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg'
-];
+// List<String> imageList = [
+//   'http://img5.mtime.cn/mt/2018/11/07/092515.55805319_180X260X4.jpg',
+//   'http://img5.mtime.cn/mt/2018/11/13/093605.61422332_180X260X4.jpg',
+//   'http://img5.mtime.cn/mt/2018/11/21/090246.16772408_135X190X4.jpg'
+// ];
 
 class _DetailPageState extends State<DetailPage> {
+  List imageList = ['', ''];
+  String url = '';
+
   void _goResult(context, int id, int i) {
     if (i == 1) {
       DioUtil.put('/alarm/$id/process/unsure');
@@ -99,10 +102,20 @@ class _DetailPageState extends State<DetailPage> {
     Navigator.pushNamed(context, '/result', arguments: i);
   }
 
+  _getImage(int id) {
+    // List images = [];
+    DioUtil.request('/image/face_pic/$id')
+        .then((res) => {this.imageList[0] = res.toString().split(',')[1]});
+
+    DioUtil.request('/image/human_pic/$id')
+        .then((res) => {this.imageList[1] = res.toString().split(',')[1]});
+  }
+
   @override
   Widget build(BuildContext context) {
     //接收参数
     Map<String, dynamic> alarm = ModalRoute.of(context).settings.arguments;
+    _getImage(alarm['id']);
 
     return Scaffold(
       backgroundColor: nusBackgroundWhite,
@@ -163,12 +176,16 @@ class _DetailPageState extends State<DetailPage> {
             width: double.infinity,
             child: new Swiper(
               itemBuilder: (BuildContext context, int index) {
-                return new Image.network(
-                  imageList[index],
+                // return new Image.network(
+                //   imageList[index],
+                //   fit: BoxFit.fill,
+                // );
+                return new Image.memory(
+                  Base64Decoder().convert(imageList[index]),
                   fit: BoxFit.fill,
                 );
               },
-              itemCount: 3,
+              itemCount: imageList.length,
               pagination: new SwiperPagination(
                 builder: DotSwiperPaginationBuilder(
                     color: nusGrey100, activeColor: nusblack150),

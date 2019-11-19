@@ -56,7 +56,7 @@ class _DashboardPageState extends State<DashboardPage> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         print('滑动到了最底部');
-        _getMore(_page++);
+        _getMore();
       }
     });
   }
@@ -75,27 +75,31 @@ class _DashboardPageState extends State<DashboardPage> {
         .then((res) => {
               setState(() {
                 list = res.data['data'];
-              })
+              }),
             });
   }
 
-  Future _getMore(int page) async {
+  Future _getMore() async {
+    this.setState(() {
+      _page = _page + 1;
+    });
     if (!isLoading) {
       setState(() {
         isLoading = true;
       });
       DioUtil.request('/camera/failure_list?page=$_page&&page_size=$_pageSize')
           .then((res) => {
-                moreData = res['data'],
+                moreData = res.data['data'],
                 setState(() {
-                  list.addAll(List.generate(moreData.length, (item) => item));
+                  // list.addAll(List.generate(moreData.length, (item) => item));
+                  list.addAll(moreData);
                   isLoading = false;
-                })
+                }),
               });
     }
   }
 
-  Widget _buildListItem(BuildContext context, int index) {
+  Widget _buildListItem(obj) {
     return Container(
         padding: const EdgeInsets.only(top: 15, bottom: 15),
         decoration: BoxDecoration(
@@ -122,9 +126,9 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(list[index]['region']),
+                Text(obj['region']),
                 SizedBox(height: 10.0),
-                Text('${list[index]['level']} - ${list[index]['room']} ')
+                Text('${obj['level']} - ${obj['room']} ')
               ],
             ),
           ],
@@ -168,7 +172,10 @@ class _DashboardPageState extends State<DashboardPage> {
                     child: Scrollbar(
                         child: ListView.builder(
               itemCount: list.length,
-              itemBuilder: _buildListItem,
+              itemBuilder: (context, i) {
+                return _buildListItem(list[i]);
+              },
+              controller: _scrollController,
             )))),
           ],
         ),
