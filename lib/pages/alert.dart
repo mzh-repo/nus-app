@@ -47,29 +47,26 @@ class _AlertPageState extends State<AlertPage> {
     this.setState(() {
       page = page + 1;
     });
+    print(isLoading);
     if (!isLoading) {
       setState(() {
         isLoading = true;
       });
       if (gender == 0) {
-        print('null');
         DioUtil.request('/alarm/list?page=$page&&page_size=$pageSize')
             .then((res) => {
                   moreData = res.data['data'],
-                  print(moreData[0]['id']),
                   setState(() {
-                    // list.addAll(List.generate(moreData.length, (item) => item));
+                    // list.addAll(List.generate(moreData.length,  (item) => item));
                     alerts.addAll(moreData);
                     isLoading = false;
                   }),
                 });
       } else {
-        print('!!!null');
         DioUtil.request(
                 '/alarm/list?page=$page&&page_size=$pageSize&&gender=$gender')
             .then((res) => {
                   moreData = res.data['data'],
-                  print(moreData[0]['id']),
                   setState(() {
                     // list.addAll(List.generate(moreData.length, (item) => item));
                     alerts.addAll(moreData);
@@ -91,11 +88,8 @@ class _AlertPageState extends State<AlertPage> {
     }
     setState(() {
       page = 0;
+      isLoading = false;
     });
-    print('index');
-    print(gender);
-    print('page');
-    print(page);
     if (gender == 0) {
       DioUtil.request('/alarm/list?page=$page&&page_size=$pageSize')
           .then((res) => {
@@ -114,11 +108,11 @@ class _AlertPageState extends State<AlertPage> {
     }
   }
 
-  _getImage(int id) {
+  _getImage(id) {
     DioUtil.request('/image/face_pic/$id').then((res) => {
-          this.url = res.toString().split(',')[1],
+          url = res.toString().split(',')[1],
         });
-    return this.url;
+    return url;
   }
 
   List<DropdownMenuItem<String>> buildDropDownMenuItem(List tabs) {
@@ -299,6 +293,7 @@ class _AlertPageState extends State<AlertPage> {
               padding: EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 0),
               child: ListView.builder(
                 itemCount: alerts.length,
+                itemExtent: 180.0,
                 itemBuilder: _buildAlert,
                 controller: _scrollController,
               )),

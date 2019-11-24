@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       };
       DioUtil.request('/user/login', formData: data)
           .then((res) =>
-              {_setStorage(res.data), Navigator.pushNamed(context, '/')})
+              {_setStorage(res.data), Navigator.popAndPushNamed(context, '/')})
           .catchError((e) => {
                 print(e),
                 Toast.show("Account or password incorrect", context,

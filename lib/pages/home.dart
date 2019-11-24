@@ -3,7 +3,7 @@ import '../style/colors.dart';
 import '../pages/alert.dart';
 import '../pages/dashboard.dart';
 import '../pages/account.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final FirebaseMessaging _fireBaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging _fireBaseMessaging = FirebaseMessaging();
 
   final List<Widget> pages = [
     AlertPage(),
@@ -30,23 +30,40 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     //push notification
-//     _fireBaseMessaging.requestNotificationPermissions(
-//         const IosNotificationSettings(sound: true, badge: true, alert: true));
-//     _fireBaseMessaging.getToken().then((token) {
-// //      print(token);
-//       if (token != null) {
-//         _postFcm(token); //推送的post请求
-//       }
-//     });
+    _fireBaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
+    _fireBaseMessaging.getToken().then((token) {
+      if (token != null) {
+        _postFcm(token); //推送的post请求
+      }
+    });
+    // get notify in application
+    _fireBaseMessaging.configure(onMessage: (Map message) {
+      handleMessage(message);
+    }, onLaunch: (Map message) {
+      handleMessage(message);
+    }, onResume: (Map message) {
+      handleMessage(message);
+    });
   }
 
   //推送的post请求
   Future _postFcm(String token) async {
+    setState(() {
+      _currentIndex = 0;
+    });
     //     String url = url;
     //     var data = {"token": token};
     //     DioUtil.post(url, data: data).then((response) {
     //   });
     // }
+  }
+
+  void handleMessage(Map message) {
+    setState(() {
+      var data = message["data"];
+      print('fcm:$data');
+    });
   }
 
   @override
