@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../style/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/http.dart';
+import 'package:flutter/services.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -38,13 +39,20 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return Scaffold(
-      backgroundColor: nusBackgroundWhite,
+      // backgroundColor: nusBackgroundWhite,
       appBar: new AppBar(
         title: Text('Account'),
         centerTitle: true,
         leading: Text(''),
-        elevation: 0, // 去除Appbar底部阴影
+        // backgroundColor: Colors.transparent,
+        // brightness: Brightness.dark,
+        // elevation: 0, // 去除Appbar底部阴影
+        elevation: 0.5,
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: ListView(
