@@ -21,7 +21,7 @@ class _ResultPageState extends State<ResultPage> {
     var type = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: nusBackgroundWhite,
-      appBar: AppBar(title: Text('Results'), centerTitle: true, elevation: 0),
+      appBar: AppBar(title: Text('Results'), leading: Text(''), centerTitle: true, elevation: 0),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.only(top: 97),

@@ -52,6 +52,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _currentIndex = 0;
     });
+
+    // token: 指定设备的消息推送
     //     String url = url;
     //     var data = {"token": token};
     //     DioUtil.post(url, data: data).then((response) {
