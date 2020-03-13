@@ -19,8 +19,8 @@ Dio dio = new Dio();
 
 main() async {
   var dio = Dio();
-  // String PEM = ''; 
-  // certificate content 
+  // String PEM = '';
+  // certificate content
   (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
       (HttpClient client) {
     // client.findProxy = (uri) {
@@ -28,9 +28,9 @@ main() async {
     //   return "PROXY localhost:8888";
     // };
     client.badCertificateCallback =
-        (X509Certificate cert, String host, int port){
-          return true;
-        };
+        (X509Certificate cert, String host, int port) {
+      return true;
+    };
     //     {
     //   if (cert.pem == PEM) {
     //     // Verify the certificate
